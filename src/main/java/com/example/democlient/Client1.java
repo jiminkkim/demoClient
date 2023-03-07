@@ -20,18 +20,25 @@ public class Client1 {
             // 서버에 요청 보내기
             socket = new Socket(ip, port);
             System.out.println(socket.getInetAddress().getHostAddress() + "에 연결됨");
-
+            String str = null;
             while (true) {
                 // 메시지 받기
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 pw = new PrintWriter(socket.getOutputStream());
 
                 // 메세지 전달
-                pw.println(LocalDateTime.now() + " " + UUID.randomUUID().toString());
+                String msg = LocalDateTime.now().plusHours(9) + " " + UUID.randomUUID().toString();
+                System.out.println(msg);
+                pw.println(msg);
                 pw.flush();
 
-                // 응답 출력
-                System.out.println(br.readLine());
+                if ((str = br.readLine()) != null) {
+                    // 응답 출력
+                    System.out.println(str);
+                } else {
+                    System.out.println("수신 실패");
+                    break;
+                }
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
